@@ -421,19 +421,20 @@ body {
   user-select: text;
   cursor: text;
   scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
+  scrollbar-color: var(--ink-dim) var(--surface-2);
 }
 
 .pass-item__val::-webkit-scrollbar {
-  height: 6px;
+  height: 8px;
 }
 
 .pass-item__val::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--surface-2);
 }
 
 .pass-item__val::-webkit-scrollbar-thumb {
-  background: var(--line);
+  background: var(--ink-dim);
+  border: 2px solid var(--surface-2);
 }
 
 .pass-item__val::-webkit-scrollbar-thumb:hover {
