@@ -234,6 +234,12 @@
       val.className = 'pass-item__val';
       val.textContent = pw;
       val.title = pw;
+      val.addEventListener('wheel', function (e) {
+        if (val.scrollWidth > val.clientWidth) {
+          e.preventDefault();
+          val.scrollLeft += e.deltaY + e.deltaX;
+        }
+      }, { passive: false });
 
       var btn = document.createElement('button');
       btn.className = 'pass-item__copy';
