@@ -413,11 +413,31 @@ body {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1.4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
   padding: 14px 0;
   font-variant-ligatures: none;
+  user-select: text;
+  cursor: text;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.pass-item__val::-webkit-scrollbar {
+  height: 6px;
+}
+
+.pass-item__val::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pass-item__val::-webkit-scrollbar-thumb {
+  background: var(--line);
+}
+
+.pass-item__val::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 .pass-item__copy {
