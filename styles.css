@@ -45,38 +45,6 @@ body {
   overflow-x: hidden;
 }
 
-/* --- Ticker --- */
-.ticker {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  overflow: hidden;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 13px;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--accent);
-}
-
-.ticker__track {
-  display: inline-block;
-  padding: 6px 0;
-  animation: ticker 22s linear infinite;
-  will-change: transform;
-}
-
-.ticker__track span {
-  display: inline-block;
-  padding-right: 3px;
-}
-
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
 /* --- App bar --- */
 .app-bar {
   display: flex;
@@ -345,15 +313,6 @@ body {
 
 .red-btn__glyph {
   font-size: 18px;
-}
-
-.red-btn__val {
-  margin-left: 4px;
-  font-size: 12px;
-  opacity: 0.9;
-  border-left: 1px solid currentColor;
-  padding-left: 10px;
-  letter-spacing: 1px;
 }
 
 /* --- Output --- */

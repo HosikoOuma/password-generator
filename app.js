@@ -2,7 +2,9 @@
   'use strict';
 
   var STORAGE_KEY = 'pgSettings';
-  var GENERATE_COUNT = 4;
+
+  var MAX_LENGTH = 256;
+  var MAX_COUNT = 12;
 
   var SETS = {
     upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -16,6 +18,8 @@
   var els = {
     length: document.getElementById('length'),
     lengthVal: document.getElementById('length-val'),
+    count: document.getElementById('count'),
+    countVal: document.getElementById('count-val'),
     setBits: document.getElementById('set-bits'),
     upper: document.getElementById('use-upper'),
     lower: document.getElementById('use-lower'),
@@ -31,8 +35,7 @@
     strengthHint: document.getElementById('strength-hint'),
     entropyMeter: document.getElementById('entropy-meter'),
     themeToggle: document.getElementById('theme-toggle'),
-    themeLabel: document.getElementById('theme-label'),
-    ticker: document.getElementById('ticker')
+    themeLabel: document.getElementById('theme-label')
   };
 
   var theme = 'dark';
@@ -40,7 +43,7 @@
 
   function loadSettings() {
     var def = {
-      length: 20, upper: true, lower: true, digit: true, symbol: true,
+      length: 20, count: 1, upper: true, lower: true, digit: true, symbol: true,
       noAmbiguous: true, ensureAll: true, theme: 'dark', generated: []
     };
     try {
@@ -55,6 +58,7 @@
   function saveSettings(extra) {
     var s = {
       length: readLength(),
+      count: readCount(),
       upper: els.upper.checked,
       lower: els.lower.checked,
       digit: els.digit.checked,
@@ -149,7 +153,13 @@
   function readLength() {
     var v = parseInt(els.length.value, 10);
     if (isNaN(v)) v = 20;
-    return Math.max(4, Math.min(64, v));
+    return Math.max(4, Math.min(MAX_LENGTH, v));
+  }
+
+  function readCount() {
+    var v = parseInt(els.count.value, 10);
+    if (isNaN(v)) v = 1;
+    return Math.max(1, Math.min(MAX_COUNT, v));
   }
 
   function refreshMeta() {
@@ -157,7 +167,8 @@
     var size = alphabetSize(alphabet);
     var length = readLength();
     if (els.ensureAll.checked && alphabet.length > length) length = alphabet.length;
-    els.lengthVal.textContent = length + '/64';
+    els.lengthVal.textContent = String(length);
+    els.countVal.textContent = String(readCount());
     els.setBits.textContent = size === 0 ? '0' : String(size);
     var bits = entropyBits(alphabet, length);
     els.entropyMeter.textContent = bits + ' BITS';
@@ -248,7 +259,7 @@
     var length = readLength();
     if (els.ensureAll.checked && alphabet.length > length) length = alphabet.length;
     var passwords = [];
-    for (var i = 0; i < GENERATE_COUNT; i++) passwords.push(generateOne(length, alphabet));
+    for (var i = 0; i < readCount(); i++) passwords.push(generateOne(length, alphabet));
     renderList(passwords);
     refreshMeta();
     saveSettings({ passwords: passwords });
@@ -262,36 +273,27 @@
     if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0a0a' : '#f2f2f0');
   }
 
-  function initTicker() {
-    var topics = [
-      'PASSWORD GENERATOR', 'DOT MATRIX EDITION', 'WEB CRYPTO API / SECURE RANDOM',
-      'ENTROPY IS MEASURED IN BITS', 'NOTHING SENT ANYWHERE', 'GENERATE. COPY. FORGET.'
-    ];
-    var line = '';
-    for (var i = 0; i < 20; i++) line += '&nbsp;&nbsp;' + topics[i % topics.length] + '&nbsp;&nbsp;&#9642;';
-    els.ticker.innerHTML = '<span>' + line + '</span><span>' + line + '</span>';
-  }
-
   function init() {
     var s = loadSettings();
     applyTheme(s.theme);
     els.length.value = String(s.length);
+    els.count.value = String(s.count);
     els.upper.checked = !!s.upper;
     els.lower.checked = !!s.lower;
     els.digit.checked = !!s.digit;
     els.symbol.checked = !!s.symbol;
     els.noAmbiguous.checked = !!s.noAmbiguous;
     els.ensureAll.checked = !!s.ensureAll;
-    initTicker();
     refreshMeta();
 
     if (Array.isArray(s.generated) && s.generated.length) {
-      renderList(s.generated.slice(0, GENERATE_COUNT));
+      renderList(s.generated.slice(0, readCount()));
     } else {
       renderEmpty();
     }
 
     els.length.addEventListener('input', refreshMeta);
+    els.count.addEventListener('input', refreshMeta);
     [els.upper, els.lower, els.digit, els.symbol, els.noAmbiguous, els.ensureAll]
       .forEach(function (el) { el.addEventListener('change', refreshMeta); });
 

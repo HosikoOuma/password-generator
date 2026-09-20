@@ -9,10 +9,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track" id="ticker"></div>
-  </div>
-
   <header class="app-bar">
     <div class="brand">
       <span class="brand__glyph">&#9616;</span>
@@ -35,9 +31,20 @@
           <label for="length">LENGTH</label>
           <output id="length-val" class="setting__val">20</output>
         </div>
-        <input id="length" class="slider" type="range" min="4" max="64" value="20" step="1">
+        <input id="length" class="slider" type="range" min="4" max="256" value="20" step="1">
         <div class="scale" aria-hidden="true">
-          <span>4</span><span>16</span><span>28</span><span>40</span><span>52</span><span>64</span>
+          <span>4</span><span>64</span><span>128</span><span>192</span><span>256</span>
+        </div>
+      </div>
+
+      <div class="setting">
+        <div class="setting__head">
+          <label for="count">PASSWORDS</label>
+          <output id="count-val" class="setting__val">1</output>
+        </div>
+        <input id="count" class="slider" type="range" min="1" max="12" value="1" step="1">
+        <div class="scale" aria-hidden="true">
+          <span>1</span><span>4</span><span>8</span><span>12</span>
         </div>
       </div>
 
@@ -84,7 +91,7 @@
       </div>
 
       <button id="generate" class="red-btn" type="button">
-        <span class="red-btn__glyph">&#10003;</span> GENERATE_<span id="count-val" class="red-btn__val">4</span>
+        <span class="red-btn__glyph">&#10003;</span> GENERATE_
       </button>
     </section>
 
